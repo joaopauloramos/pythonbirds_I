@@ -43,7 +43,7 @@ class Fase():
 
         :param obstaculos:
         """
-        pass
+        self._obstaculos.extend(obstaculos)
 
     def adicionar_porco(self, *porcos):
         """
@@ -51,7 +51,7 @@ class Fase():
 
         :param porcos:
         """
-        pass
+        self._porcos.extend(porcos)
 
     def adicionar_passaro(self, *passaros):
         """
@@ -59,7 +59,7 @@ class Fase():
 
         :param passaros:
         """
-        pass
+        self._passaros.extend(passaros)
 
     def status(self):
         """
@@ -73,7 +73,17 @@ class Fase():
 
         :return:
         """
-        return EM_ANDAMENTO
+        for porco in self._porcos:
+            if porco.status == ATIVO:
+                break
+        else:
+            return VITORIA
+
+        for passaro in self._passaros:
+            if passaro.status == ATIVO:
+                return EM_ANDAMENTO
+
+        return DERROTA
 
     def lancar(self, angulo, tempo):
         """
@@ -86,7 +96,10 @@ class Fase():
         :param angulo: ângulo de lançamento
         :param tempo: Tempo de lançamento
         """
-        pass
+        for passaro in self._passaros:
+            if not passaro.foi_lancado():
+                passaro.lancar(angulo, tempo)
+                return
 
 
     def calcular_pontos(self, tempo):
